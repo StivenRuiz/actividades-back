@@ -1,0 +1,93 @@
+-- SCHEMA: actividades
+
+-- DROP SCHEMA actividades ;
+
+CREATE SCHEMA actividades
+    AUTHORIZATION postgres;
+
+COMMENT ON SCHEMA actividades
+    IS 'standard public schema';
+
+GRANT ALL ON SCHEMA actividades TO PUBLIC;
+
+GRANT ALL ON SCHEMA actividades TO postgres;
+
+
+-- SEQUENCE: actividades.actividad_id_actividad_seq
+
+-- DROP SEQUENCE actividades.actividad_id_actividad_seq;
+
+CREATE SEQUENCE actividades.actividad_id_actividad_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE actividades.actividad_id_actividad_seq
+    OWNER TO postgres;
+    
+  
+-- SEQUENCE: actividades.empleado_id_seq
+
+-- DROP SEQUENCE actividades.empleado_id_seq;
+
+CREATE SEQUENCE actividades.empleado_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE actividades.empleado_id_seq
+    OWNER TO postgres;
+
+-- Table: actividades.empleado
+
+-- DROP TABLE actividades.empleado;
+
+CREATE TABLE IF NOT EXISTS actividades.empleado
+(
+    id integer NOT NULL DEFAULT nextval('actividades.empleado_id_seq'::regclass),
+    nombre character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT empleado_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE actividades.empleado
+    OWNER to postgres;
+    
+-- Table: actividades.actividad
+
+-- DROP TABLE actividades.actividad;
+
+CREATE TABLE IF NOT EXISTS actividades.actividad
+(
+    id_actividad integer NOT NULL DEFAULT nextval('actividades.actividad_id_actividad_seq'::regclass),
+    estado character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    fecha_estimada timestamp without time zone NOT NULL,
+    nombre character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    id_empleado integer NOT NULL,
+    CONSTRAINT actividad_pkey PRIMARY KEY (id_actividad),
+    CONSTRAINT fk28wg3rgumjylgjecmibbf4ill FOREIGN KEY (id_empleado)
+        REFERENCES actividades.empleado (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE actividades.actividad
+    OWNER to postgres;
+    
+INSERT INTO actividades.empleado(nombre) VALUES ('DAVID');
+INSERT INTO actividades.empleado(nombre) VALUES ('PEDRO');
+INSERT INTO actividades.empleado(nombre) VALUES ('CAMILO');
+INSERT INTO actividades.empleado(nombre) VALUES ('JUAN');
+INSERT INTO actividades.empleado(nombre) VALUES ('CAMILO');
+INSERT INTO actividades.empleado(nombre) VALUES ('EFRAIN');
